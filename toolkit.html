@@ -77,13 +77,13 @@ input,select,textarea { width:100%; background:var(–surface2); border:1px soli
 input:focus,select:focus,textarea:focus { border-color:var(–accent2); border-bottom-color:var(–accent); }
 input::placeholder, textarea::placeholder { color:#8899aa; opacity:1; }
 ::-webkit-input-placeholder { color:#8899aa; opacity:1; }
-select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%239ca3b0’ d=‘M1 1l5 5 5-5’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
+select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23ffffff’ d=‘M1 1l5 5 5-5’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; color:#ffffff; }
 select option { background:var(–surface2); color:#ffffff; }
 textarea { resize:vertical; min-height:90px; }
 .form-row { margin-bottom:14px; }
 
 .btn { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:14px 24px; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border:none; transition:all 0.15s; width:100%; }
-.btn-primary { background:var(–accent); color:#fff; }
+.btn-primary { background:var(–accent); color:#ffffff; font-weight:800; }
 .btn-primary:active { filter:brightness(0.85); }
 .btn-steel { background:var(–accent2); color:#ffffff; }
 .btn-steel:active { filter:brightness(0.85); }
@@ -170,16 +170,16 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <div class="form-row"><label>Busy Season</label><select id="d-season"><option value="">Select...</option><option>Summer (AC focused)</option><option>Winter (heat focused)</option><option>Both peaks</option><option>Year-round steady</option></select></div>
     <div class="section-label">Pain Points — Tap to Select</div>
     <ul class="checklist" id="pain-list">
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Missed / slow follow-ups on estimates</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Manual scheduling & dispatch</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No-shows — reminders are manual</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Invoices sent late or chased</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> After-hours leads go unanswered</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Not asking for Google reviews</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Maintenance contract renewals manual</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No visibility into tech / job status</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No system to re-market past customers</li>
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Parts / inventory tracked on paper</li>
+      <li><div class="check-box">✓</div> Missed / slow follow-ups on estimates</li>
+      <li><div class="check-box">✓</div> Manual scheduling & dispatch</li>
+      <li><div class="check-box">✓</div> No-shows — reminders are manual</li>
+      <li><div class="check-box">✓</div> Invoices sent late or chased</li>
+      <li><div class="check-box">✓</div> After-hours leads go unanswered</li>
+      <li><div class="check-box">✓</div> Not asking for Google reviews</li>
+      <li><div class="check-box">✓</div> Maintenance contract renewals manual</li>
+      <li><div class="check-box">✓</div> No visibility into tech / job status</li>
+      <li><div class="check-box">✓</div> No system to re-market past customers</li>
+      <li><div class="check-box">✓</div> Parts / inventory tracked on paper</li>
     </ul>
     <div class="section-label">Key Notes</div>
     <div class="form-row"><label>Their Biggest Bottleneck (their words)</label><textarea id="d-bottleneck" placeholder="Write it exactly as they say it — their language = your pitch."></textarea></div>
@@ -336,18 +336,24 @@ function switchTab(name,label,btn){
   document.getElementById('current-tab-label').textContent=label||name;
   document.getElementById('scroll-area').scrollTop=0;
 }
-function toggleCheck(el){
+function toggleCheck(el, e) {
+  if(e) e.preventDefault();
   el.querySelector('.check-box').classList.toggle('checked');
 }
-// Make checkboxes work reliably on iPad Safari
-document.addEventListener('DOMContentLoaded', function() {
+function initCheckboxes() {
   document.querySelectorAll('.checklist li').forEach(function(li) {
-    li.addEventListener('touchend', function(e) {
+    li.addEventListener('touchstart', function(e) {
       e.preventDefault();
-      toggleCheck(this);
+      this.querySelector('.check-box').classList.toggle('checked');
+    }, {passive: false});
+    li.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.querySelector('.check-box').classList.toggle('checked');
     });
   });
-});
+}
+document.addEventListener('DOMContentLoaded', initCheckboxes);
+setTimeout(initCheckboxes, 500);
 function getChecked(id){return Array.from(document.querySelectorAll('#'+id+' li')).filter(li=>li.querySelector('.check-box').classList.contains('checked')).map(li=>li.textContent.trim());}
 function showLoading(id){const el=document.getElementById(id);el.classList.add('show');el.innerHTML='<span class="loading"></span> Generating...';}
 function renderOutput(id,text){const el=document.getElementById(id);el.innerHTML='<button class="copy-btn" onclick="copyOut(\''+id+'\')">⬆ COPY TO CLIPBOARD</button>'+text;el.classList.add('show');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
