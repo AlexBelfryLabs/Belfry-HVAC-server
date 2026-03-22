@@ -64,7 +64,7 @@ h3 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, A
 p { font-size:14px; color:#ffffff; line-height:1.7; font-weight:400; }
 
 .section-label { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#38bdf8; margin:22px 0 14px; display:flex; align-items:center; gap:10px; }
-.section-label::before { content:‘▶’; font-size:7px; color:var(–accent); }
+.section-label::before { content:’>’; font-size:7px; color:var(–accent); }
 .section-label::after { content:’’; flex:1; height:1px; background:var(–border); }
 
 .card { background:var(–surface); border:1px solid var(–border); border-left:3px solid var(–border2); padding:16px; margin-bottom:10px; }
@@ -159,32 +159,32 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <div class="page-tag">Step 01</div>
     <h1>Discovery <span>Call</span></h1>
     <p class="subtitle">Fill out live during the call. Hit generate for an instant opportunity summary.</p>
-    <div class="alert"><strong>PRO TIP —</strong> Ask "How many calls do you miss or follow up late each week?" — this number unlocks the whole ROI conversation.</div>
+    <div class="alert"><strong>PRO TIP --</strong> Ask "How many calls do you miss or follow up late each week?" -- this number unlocks the whole ROI conversation.</div>
     <div class="section-label">Company Profile</div>
     <div class="form-row"><label>Company Name</label><input type="text" id="d-biz" placeholder="e.g. Riverside Heating & Cooling"></div>
     <div class="form-row"><label>Owner Name</label><input type="text" id="d-owner" placeholder="e.g. Mike Torres"></div>
-    <div class="form-row"><label>Number of Technicians</label><select id="d-techs"><option value="">Select...</option><option>1–2 (owner-operator)</option><option>3–5 techs</option><option>6–15 techs</option><option>15+ techs</option></select></div>
-    <div class="form-row"><label>Monthly Revenue (approx)</label><select id="d-rev"><option value="">Select...</option><option>Under $30k</option><option>$30k–$80k</option><option>$80k–$200k</option><option>$200k+</option></select></div>
+    <div class="form-row"><label>Number of Technicians</label><select id="d-techs"><option value="">Select...</option><option>1-2 (owner-operator)</option><option>3-5 techs</option><option>6-15 techs</option><option>15+ techs</option></select></div>
+    <div class="form-row"><label>Monthly Revenue (approx)</label><select id="d-rev"><option value="">Select...</option><option>Under $30k</option><option>$30k-$80k</option><option>$80k-$200k</option><option>$200k+</option></select></div>
     <div class="form-row"><label>Current Software / Tools</label><input type="text" id="d-tools" placeholder="e.g. ServiceTitan, Jobber, pen & paper"></div>
     <div class="form-row"><label>Calls / Leads Per Week</label><input type="text" id="d-leads" placeholder="e.g. ~30 inbound calls/week"></div>
     <div class="form-row"><label>Busy Season</label><select id="d-season"><option value="">Select...</option><option>Summer (AC focused)</option><option>Winter (heat focused)</option><option>Both peaks</option><option>Year-round steady</option></select></div>
-    <div class="section-label">Pain Points — Tap to Select</div>
+    <div class="section-label">Pain Points -- Tap to Select</div>
     <ul class="checklist" id="pain-list">
-      <li><div class="check-box">✓</div> Missed / slow follow-ups on estimates</li>
-      <li><div class="check-box">✓</div> Manual scheduling & dispatch</li>
-      <li><div class="check-box">✓</div> No-shows — reminders are manual</li>
-      <li><div class="check-box">✓</div> Invoices sent late or chased</li>
-      <li><div class="check-box">✓</div> After-hours leads go unanswered</li>
-      <li><div class="check-box">✓</div> Not asking for Google reviews</li>
-      <li><div class="check-box">✓</div> Maintenance contract renewals manual</li>
-      <li><div class="check-box">✓</div> No visibility into tech / job status</li>
-      <li><div class="check-box">✓</div> No system to re-market past customers</li>
-      <li><div class="check-box">✓</div> Parts / inventory tracked on paper</li>
+      <li><div class="check-box">+</div> Missed / slow follow-ups on estimates</li>
+      <li><div class="check-box">+</div> Manual scheduling & dispatch</li>
+      <li><div class="check-box">+</div> No-shows -- reminders are manual</li>
+      <li><div class="check-box">+</div> Invoices sent late or chased</li>
+      <li><div class="check-box">+</div> After-hours leads go unanswered</li>
+      <li><div class="check-box">+</div> Not asking for Google reviews</li>
+      <li><div class="check-box">+</div> Maintenance contract renewals manual</li>
+      <li><div class="check-box">+</div> No visibility into tech / job status</li>
+      <li><div class="check-box">+</div> No system to re-market past customers</li>
+      <li><div class="check-box">+</div> Parts / inventory tracked on paper</li>
     </ul>
     <div class="section-label">Key Notes</div>
-    <div class="form-row"><label>Their Biggest Bottleneck (their words)</label><textarea id="d-bottleneck" placeholder="Write it exactly as they say it — their language = your pitch."></textarea></div>
+    <div class="form-row"><label>Their Biggest Bottleneck (their words)</label><textarea id="d-bottleneck" placeholder="Write it exactly as they say it -- their language = your pitch."></textarea></div>
     <div class="form-row"><label>Extra Notes (budget, urgency, decision makers)</label><textarea id="d-notes" placeholder="Anything else worth remembering..."></textarea></div>
-    <button class="btn btn-primary" onclick="genDiscovery()">Generate Opportunity Summary →</button>
+    <button class="btn btn-primary" onclick="genDiscovery()">Generate Opportunity Summary -></button>
     <div class="output" id="discovery-output"></div>
   </div>
 
@@ -196,9 +196,9 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <p class="subtitle">Score this HVAC company across 8 areas. Generates a client-ready audit report.</p>
     <div class="form-row"><label>Company Name</label><input type="text" id="a-biz" placeholder="Company name"></div>
     <div class="form-row"><label>Number of Techs</label><input type="text" id="a-techs" placeholder="e.g. 6 techs"></div>
-    <div class="section-label">Score Each Area — 1 = All Manual, 5 = Fully Automated</div>
+    <div class="section-label">Score Each Area -- 1 = All Manual, 5 = Fully Automated</div>
     <div id="audit-scores"></div>
-    <button class="btn btn-primary mt-12" onclick="genAudit()">Generate Audit Report →</button>
+    <button class="btn btn-primary mt-12" onclick="genAudit()">Generate Audit Report -></button>
     <div class="output" id="audit-output"></div>
   </div>
 
@@ -212,9 +212,9 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <div class="form-row"><label>Company Name</label><input type="text" id="p-company" placeholder="e.g. Riverside Heating & Cooling"></div>
     <div class="form-row"><label>Their #1 Pain (their words)</label><input type="text" id="p-pain" placeholder="e.g. We lose jobs because we don't call back fast enough"></div>
     <div class="form-row"><label>Top Automations to Propose</label><input type="text" id="p-autos" placeholder="e.g. lead response bot, invoice automation, reviews"></div>
-    <div class="form-row"><label>Monthly Investment</label><select id="p-tier"><option>$750/mo — Starter</option><option>$1,500/mo — Growth</option><option>$2,000/mo — Growth+</option><option>$2,500/mo — Scale</option></select></div>
+    <div class="form-row"><label>Monthly Investment</label><select id="p-tier"><option>$750/mo -- Starter</option><option>$1,500/mo -- Growth</option><option>$2,000/mo -- Growth+</option><option>$2,500/mo -- Scale</option></select></div>
     <div class="form-row"><label>Your Name / Business</label><input type="text" id="p-you" placeholder="Your name or agency"></div>
-    <button class="btn btn-primary" onclick="genProposal()">Generate Proposal →</button>
+    <button class="btn btn-primary" onclick="genProposal()">Generate Proposal -></button>
     <div class="output" id="proposal-output"></div>
   </div>
 
@@ -225,11 +225,11 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <h1>Cold <span>Outreach</span></h1>
     <p class="subtitle">HVAC-specific scripts that sound human. Tap generate, copy, send.</p>
     <div class="form-row"><label>HVAC Sub-Niche</label><select id="o-niche"><option>Residential HVAC (general)</option><option>Commercial HVAC contractors</option><option>HVAC + plumbing combo shops</option><option>AC-only (warm climate)</option><option>Heating-only (cold climate)</option><option>HVAC maintenance / service contract focus</option></select></div>
-    <div class="form-row"><label>Company Size Target</label><select id="o-size"><option>Small (1–5 techs, owner-operator)</option><option>Medium (6–15 techs)</option><option>Growing (15–40 techs)</option></select></div>
+    <div class="form-row"><label>Company Size Target</label><select id="o-size"><option>Small (1-5 techs, owner-operator)</option><option>Medium (6-15 techs)</option><option>Growing (15-40 techs)</option></select></div>
     <div class="form-row"><label>Your Name</label><input type="text" id="o-name" placeholder="Your first name"></div>
-    <div class="form-row"><label>Message Type</label><select id="o-type"><option>Cold Email — Initial Outreach</option><option>Cold Email — Follow Up #1 (day 3)</option><option>Cold Email — Follow Up #2 (day 7)</option><option>LinkedIn DM — Connection Request</option><option>LinkedIn DM — After Connect</option><option>SMS / Text Message</option><option>Voicemail Script</option></select></div>
-    <div class="form-row"><label>Specific Hook (optional)</label><input type="text" id="o-hook" placeholder="e.g. I saw you have 4.2 stars — easy fix"></div>
-    <button class="btn btn-primary" onclick="genOutreach()">Generate Script →</button>
+    <div class="form-row"><label>Message Type</label><select id="o-type"><option>Cold Email -- Initial Outreach</option><option>Cold Email -- Follow Up #1 (day 3)</option><option>Cold Email -- Follow Up #2 (day 7)</option><option>LinkedIn DM -- Connection Request</option><option>LinkedIn DM -- After Connect</option><option>SMS / Text Message</option><option>Voicemail Script</option></select></div>
+    <div class="form-row"><label>Specific Hook (optional)</label><input type="text" id="o-hook" placeholder="e.g. I saw you have 4.2 stars -- easy fix"></div>
+    <button class="btn btn-primary" onclick="genOutreach()">Generate Script -></button>
     <div class="output" id="outreach-output"></div>
   </div>
 
@@ -239,11 +239,11 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <div class="page-tag">Step 05</div>
     <h1>Objection <span>Crusher</span></h1>
     <p class="subtitle">Tap any objection for a word-for-word response. Or type a custom one.</p>
-    <div class="section-label">Common HVAC Objections — Tap One</div>
+    <div class="section-label">Common HVAC Objections -- Tap One</div>
     <div id="objection-grid"></div>
     <div class="section-label">Custom Objection</div>
     <div class="form-row"><textarea id="custom-obj" placeholder="Type exactly what they said..." style="min-height:70px;"></textarea></div>
-    <button class="btn btn-steel" onclick="handleCustomObj()">Handle This Objection →</button>
+    <button class="btn btn-steel" onclick="handleCustomObj()">Handle This Objection -></button>
     <div class="output" id="objection-output"></div>
   </div>
 
@@ -255,12 +255,12 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
     <p class="subtitle">Show owners exactly what they get and why the fee is a fraction of what they're losing.</p>
     <div class="section-label">Your Service Tiers</div>
     <div class="price-card">
-      <div class="price-row"><div><h3>Starter</h3><div class="price-num">$750</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>1–3 techs</div></div>
+      <div class="price-row"><div><h3>Starter</h3><div class="price-num">$750</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>1-3 techs</div></div>
       <div class="price-features"><span class="price-feat">2 automations built</span><span class="price-feat">Lead response bot</span><span class="price-feat">Monthly reporting</span><span class="price-feat">Email support</span></div>
     </div>
     <div class="price-card featured">
-      <div class="price-row"><div><h3>Growth</h3><div class="price-num">$1,500</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>4–12 techs</div></div>
-      <div class="price-features"><span class="price-feat">4–6 automations</span><span class="price-feat">Full AI stack</span><span class="price-feat">Review automation</span><span class="price-feat">Weekly check-ins</span></div>
+      <div class="price-row"><div><h3>Growth</h3><div class="price-num">$1,500</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>4-12 techs</div></div>
+      <div class="price-features"><span class="price-feat">4-6 automations</span><span class="price-feat">Full AI stack</span><span class="price-feat">Review automation</span><span class="price-feat">Weekly check-ins</span></div>
     </div>
     <div class="price-card">
       <div class="price-row"><div><h3>Scale</h3><div class="price-num">$2,500</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>12+ techs</div></div>
@@ -274,7 +274,7 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
       <div class="form-row"><label>Staff Hourly Cost ($/hr)</label><input type="number" id="roi-rate" value="22" inputmode="numeric"></div>
       <div class="form-row"><label>Your Monthly Fee ($)</label><input type="number" id="roi-fee" value="1500" inputmode="numeric"></div>
       <div class="form-row"><label>Review / Reputation Value / mo ($)</label><input type="number" id="roi-reviews" value="500" inputmode="numeric"></div>
-      <button class="btn btn-primary mt-12" onclick="calcROI()">Calculate ROI →</button>
+      <button class="btn btn-primary mt-12" onclick="calcROI()">Calculate ROI -></button>
     </div>
     <div class="output" id="roi-output"></div>
   </div>
@@ -291,26 +291,26 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
       <div class="stat-box"><div class="stat-num">~4%</div><div class="stat-label">Use AI</div></div>
     </div>
     <div class="section-label">The 8 Biggest Money Leaks</div>
-    <div class="pain-card"><h3>01 — After-Hours Lead Loss</h3><p>40–60% of HVAC calls come outside business hours. Without auto-response, those leads call the next company. At $450/job, 5 missed leads/week = <strong>$9,000+/month gone.</strong></p></div>
-    <div class="pain-card"><h3>02 — No-Show Appointments</h3><p>Industry no-show rate is 15–25% without reminders. A $300k/yr company loses $45–75k in wasted truck rolls. Automated SMS reminders cut this by 70%+.</p></div>
-    <div class="pain-card"><h3>03 — Slow Estimate Follow-Up</h3><p>78% of jobs go to the first company to respond. Automated estimate follow-up sequences close 20–35% more jobs with zero extra effort.</p></div>
-    <div class="pain-card"><h3>04 — Maintenance Contract Attrition</h3><p>Most companies lose 30–40% of SMA contracts yearly because renewals are tracked on spreadsheets or simply forgotten.</p></div>
-    <div class="pain-card"><h3>05 — Review Gap</h3><p>HVAC is hyper-local and SEO-driven. Most owners do great work but never ask. Automated post-job review requests add 20–50 reviews/month.</p></div>
-    <div class="pain-card"><h3>06 — Invoice Delays</h3><p>Average HVAC company carries $15–40k in outstanding receivables at any time — mostly due to process, not customer refusal.</p></div>
-    <div class="pain-card"><h3>07 — Dead Lead Reactivation</h3><p>Most companies have 500–2,000+ past customers never re-contacted. One reactivation campaign typically generates $10–30k in new jobs within 30 days.</p></div>
-    <div class="pain-card"><h3>08 — Dispatch Chaos</h3><p>Without smart scheduling, techs waste 45–90 min/day in dead drive time. At $75/hr loaded cost, that's $1,500–$3,000/tech/month in pure waste.</p></div>
+    <div class="pain-card"><h3>01 -- After-Hours Lead Loss</h3><p>40-60% of HVAC calls come outside business hours. Without auto-response, those leads call the next company. At $450/job, 5 missed leads/week = <strong>$9,000+/month gone.</strong></p></div>
+    <div class="pain-card"><h3>02 -- No-Show Appointments</h3><p>Industry no-show rate is 15-25% without reminders. A $300k/yr company loses $45-75k in wasted truck rolls. Automated SMS reminders cut this by 70%+.</p></div>
+    <div class="pain-card"><h3>03 -- Slow Estimate Follow-Up</h3><p>78% of jobs go to the first company to respond. Automated estimate follow-up sequences close 20-35% more jobs with zero extra effort.</p></div>
+    <div class="pain-card"><h3>04 -- Maintenance Contract Attrition</h3><p>Most companies lose 30-40% of SMA contracts yearly because renewals are tracked on spreadsheets or simply forgotten.</p></div>
+    <div class="pain-card"><h3>05 -- Review Gap</h3><p>HVAC is hyper-local and SEO-driven. Most owners do great work but never ask. Automated post-job review requests add 20-50 reviews/month.</p></div>
+    <div class="pain-card"><h3>06 -- Invoice Delays</h3><p>Average HVAC company carries $15-40k in outstanding receivables at any time -- mostly due to process, not customer refusal.</p></div>
+    <div class="pain-card"><h3>07 -- Dead Lead Reactivation</h3><p>Most companies have 500-2,000+ past customers never re-contacted. One reactivation campaign typically generates $10-30k in new jobs within 30 days.</p></div>
+    <div class="pain-card"><h3>08 -- Dispatch Chaos</h3><p>Without smart scheduling, techs waste 45-90 min/day in dead drive time. At $75/hr loaded cost, that's $1,500-$3,000/tech/month in pure waste.</p></div>
     <div class="section-label">Industry Language</div>
     <div class="card blue-left">
       <h3>Terms to Know</h3>
-      <p><strong style="color:#ffffff">Service call</strong> — diagnostic visit, $75–150<br><strong style="color:#ffffff">SMA / Maintenance agreement</strong> — recurring annual contract, $150–400/yr<br><strong style="color:#ffffff">Install</strong> — full system replacement, $4,000–$15,000<br><strong style="color:#ffffff">Truck roll</strong> — dispatching a tech, costs ~$75–150 loaded<br><strong style="color:#ffffff">Callback</strong> — return visit for unsatisfied repair<br><strong style="color:#ffffff">Flat rate vs T&M</strong> — flat rate pricing vs time &amp; materials</p>
+      <p><strong style="color:#ffffff">Service call</strong> -- diagnostic visit, $75-150<br><strong style="color:#ffffff">SMA / Maintenance agreement</strong> -- recurring annual contract, $150-400/yr<br><strong style="color:#ffffff">Install</strong> -- full system replacement, $4,000-$15,000<br><strong style="color:#ffffff">Truck roll</strong> -- dispatching a tech, costs ~$75-150 loaded<br><strong style="color:#ffffff">Callback</strong> -- return visit for unsatisfied repair<br><strong style="color:#ffffff">Flat rate vs T&M</strong> -- flat rate pricing vs time &amp; materials</p>
       <hr>
       <h3>What They Actually Care About</h3>
-      <p><strong style="color:#ffffff">#1 More installs</strong> — highest margin jobs<br><strong style="color:#ffffff">#2 Maintenance contracts</strong> — predictable recurring cash<br><strong style="color:#ffffff">#3 Google reviews</strong> — drives all local lead flow<br><strong style="color:#ffffff">#4 Getting paid fast</strong> — cash flow tight in shoulder season<br><strong style="color:#ffffff">#5 Not working weekends</strong> — most owners are burned out</p>
+      <p><strong style="color:#ffffff">#1 More installs</strong> -- highest margin jobs<br><strong style="color:#ffffff">#2 Maintenance contracts</strong> -- predictable recurring cash<br><strong style="color:#ffffff">#3 Google reviews</strong> -- drives all local lead flow<br><strong style="color:#ffffff">#4 Getting paid fast</strong> -- cash flow tight in shoulder season<br><strong style="color:#ffffff">#5 Not working weekends</strong> -- most owners are burned out</p>
     </div>
     <div class="section-label">Generate Automation Ideas</div>
     <div class="card">
       <div class="form-row"><label>Describe the Company Situation</label><textarea id="intel-situation" placeholder="e.g. 8 techs, uses Jobber, busy in summer, struggles with reviews and estimate follow-up"></textarea></div>
-      <button class="btn btn-primary" onclick="genAutomationIdeas()">Generate Custom Automation Ideas →</button>
+      <button class="btn btn-primary" onclick="genAutomationIdeas()">Generate Custom Automation Ideas -></button>
     </div>
     <div class="output" id="intel-output"></div>
   </div>
@@ -318,13 +318,13 @@ hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="switchTab('discovery','01 Discovery',this)"><span class="nav-icon">🔍</span><span class="nav-label">Discovery</span></button>
-  <button class="nav-btn" onclick="switchTab('audit','02 Audit',this)"><span class="nav-icon">📊</span><span class="nav-label">Audit</span></button>
-  <button class="nav-btn" onclick="switchTab('proposal','03 Proposal',this)"><span class="nav-icon">📄</span><span class="nav-label">Proposal</span></button>
-  <button class="nav-btn" onclick="switchTab('outreach','04 Outreach',this)"><span class="nav-icon">✉️</span><span class="nav-label">Outreach</span></button>
-  <button class="nav-btn" onclick="switchTab('objections','05 Objections',this)"><span class="nav-icon">🛡️</span><span class="nav-label">Objections</span></button>
-  <button class="nav-btn" onclick="switchTab('pricing','06 Pricing',this)"><span class="nav-icon">💰</span><span class="nav-label">Pricing</span></button>
-  <button class="nav-btn" onclick="switchTab('intel','07 Intel',this)"><span class="nav-icon">⚡</span><span class="nav-label">Intel</span></button>
+  <button class="nav-btn active" onclick="switchTab('discovery','01 Discovery',this)"><span class="nav-icon"></span><span class="nav-label">Discovery</span></button>
+  <button class="nav-btn" onclick="switchTab('audit','02 Audit',this)"><span class="nav-icon"></span><span class="nav-label">Audit</span></button>
+  <button class="nav-btn" onclick="switchTab('proposal','03 Proposal',this)"><span class="nav-icon"></span><span class="nav-label">Proposal</span></button>
+  <button class="nav-btn" onclick="switchTab('outreach','04 Outreach',this)"><span class="nav-icon"></span><span class="nav-label">Outreach</span></button>
+  <button class="nav-btn" onclick="switchTab('objections','05 Objections',this)"><span class="nav-icon"></span><span class="nav-label">Objections</span></button>
+  <button class="nav-btn" onclick="switchTab('pricing','06 Pricing',this)"><span class="nav-icon"></span><span class="nav-label">Pricing</span></button>
+  <button class="nav-btn" onclick="switchTab('intel','07 Intel',this)"><span class="nav-icon"></span><span class="nav-label">Intel</span></button>
 </nav>
 
 <script>
@@ -356,9 +356,9 @@ document.addEventListener('DOMContentLoaded', initCheckboxes);
 setTimeout(initCheckboxes, 500);
 function getChecked(id){return Array.from(document.querySelectorAll('#'+id+' li')).filter(li=>li.querySelector('.check-box').classList.contains('checked')).map(li=>li.textContent.trim());}
 function showLoading(id){const el=document.getElementById(id);el.classList.add('show');el.innerHTML='<span class="loading"></span> Generating...';}
-function renderOutput(id,text){const el=document.getElementById(id);el.innerHTML='<button class="copy-btn" onclick="copyOut(\''+id+'\')">⬆ COPY TO CLIPBOARD</button>'+text;el.classList.add('show');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
-function copyOut(id){const text=document.getElementById(id).innerText.replace('⬆ COPY TO CLIPBOARD
-','');navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(id).querySelector('.copy-btn');btn.textContent='✓ COPIED!';setTimeout(()=>btn.textContent='⬆ COPY TO CLIPBOARD',2000);});}
+function renderOutput(id,text){const el=document.getElementById(id);el.innerHTML='<button class="copy-btn" onclick="copyOut(\''+id+'\')">^ COPY TO CLIPBOARD</button>'+text;el.classList.add('show');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
+function copyOut(id){const text=document.getElementById(id).innerText.replace('^ COPY TO CLIPBOARD
+','');navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(id).querySelector('.copy-btn');btn.textContent='v COPIED!';setTimeout(()=>btn.textContent='^ COPY TO CLIPBOARD',2000);});}
 // Paste your Replit URL here after setup (Step 6 in the guide)
 const SERVER_URL = 'https://belfry-hvac-server.onrender.com/api/chat';
 
@@ -396,7 +396,7 @@ Main Bottleneck: ${bottleneck}
 Notes: ${notes}
 
 Write:
-OPPORTUNITY SCORE: X/10 — one sentence why
+OPPORTUNITY SCORE: X/10 -- one sentence why
 ESTIMATED ANNUAL REVENUE LEAK: dollar figure with math
 TOP 3 AUTOMATION WINS: specific to HVAC, tool suggestions, dollars/hours saved each
 RECOMMENDED TIER: $750/$1,500/$2,500 with one-line justification
@@ -419,7 +419,7 @@ const auditAreas=[
 ];
 
 function buildAuditForm(){
-  document.getElementById('audit-scores').innerHTML=auditAreas.map(a=>`<div class="score-card"><div class="score-card-top"><div><div class="score-card-title">${a.label}</div><div class="score-card-desc" style="color:#ffffff">${a.desc}</div></div><select id="score-${a.id}" class="score-select" onchange="updateBar('${a.id}',this.value)"><option value="1">1 — Manual</option><option value="2">2 — Mostly manual</option><option value="3" selected>3 — Mixed</option><option value="4">4 — Mostly auto</option><option value="5">5 — Automated</option></select></div><div class="score-label"><span>Automation Gap</span><span id="gap-${a.id}">Medium</span></div><div class="score-bar"><div class="score-fill" id="bar-${a.id}" style="width:60%;"></div></div></div>`).join('');
+  document.getElementById('audit-scores').innerHTML=auditAreas.map(a=>`<div class="score-card"><div class="score-card-top"><div><div class="score-card-title">${a.label}</div><div class="score-card-desc" style="color:#ffffff">${a.desc}</div></div><select id="score-${a.id}" class="score-select" onchange="updateBar('${a.id}',this.value)"><option value="1">1 -- Manual</option><option value="2">2 -- Mostly manual</option><option value="3" selected>3 -- Mixed</option><option value="4">4 -- Mostly auto</option><option value="5">5 -- Automated</option></select></div><div class="score-label"><span>Automation Gap</span><span id="gap-${a.id}">Medium</span></div><div class="score-bar"><div class="score-fill" id="bar-${a.id}" style="width:60%;"></div></div></div>`).join('');
   auditAreas.forEach(a=>updateBar(a.id,3));
 }
 
@@ -447,7 +447,7 @@ Scores (1=manual, 5=automated):
 ${scores}
 Average: ${avg}/5
 
-HVAC AI AUDIT REPORT — ${biz.toUpperCase()}
+HVAC AI AUDIT REPORT -- ${biz.toUpperCase()}
 
 AUTOMATION MATURITY: X/10
 [One sentence framed around opportunity]
@@ -459,7 +459,7 @@ TOP 3 QUICK WINS
 [Each: automation name, tools, what it replaces, time to implement, dollar/hour value]
 
 12-MONTH OPPORTUNITY VALUE
-[Total annual value — show math]
+[Total annual value -- show math]
 
 RECOMMENDED NEXT STEP
 [Specific, low-friction, easy to say yes]
@@ -483,12 +483,12 @@ Pain: "${pain}" | Automations: ${autos} | Investment: ${tier}
 
 SUBJECT: [punchy, specific]
 
-[Opening — 1 sentence mirroring their pain]
+[Opening -- 1 sentence mirroring their pain]
 
 HERES WHAT WELL BUILD FOR ${company.toUpperCase()}:
-- [Automation 1 — specific outcome]
-- [Automation 2 — specific outcome]
-- [Automation 3 — specific outcome]
+- [Automation 1 -- specific outcome]
+- [Automation 2 -- specific outcome]
+- [Automation 3 -- specific outcome]
 
 WHAT YOULL SEE IN 30 DAYS:
 [3 specific measurable outcomes]
@@ -511,7 +511,7 @@ async function genOutreach(){
   const type=document.getElementById('o-type').value;
   const hook=document.getElementById('o-hook').value||'';
   showLoading('outreach-output');
-  try{renderOutput('outreach-output',await callClaude(`Write a ${type} from an AI automation consultant targeting ${niche} — ${size}.
+  try{renderOutput('outreach-output',await callClaude(`Write a ${type} from an AI automation consultant targeting ${niche} -- ${size}.
 Sender: ${name}${hook?'
 Specific hook: '+hook:''}
 
@@ -528,7 +528,7 @@ Output the message only.`));}
 }
 
 const objections=[
-  "I already use ServiceTitan — I don't need more software",
+  "I already use ServiceTitan -- I don't need more software",
   "I don't have time to learn new technology",
   "We tried automation before and it was a headache",
   "Business is slow right now, not a good time",
@@ -563,7 +563,7 @@ async function handleObjection(obj){
 "${obj}"
 
 Respond:
-1. Acknowledge briefly — don't grovel
+1. Acknowledge briefly -- don't grovel
 2. Reframe in HVAC context
 3. Direct credible reply using specific HVAC pain points
 4. End with a question that keeps them talking
@@ -588,29 +588,29 @@ function calcROI(){
   const fmt=n=>'$'+n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
   const el=document.getElementById('roi-output');
   el.classList.add('show');
-  el.innerHTML=`<button class="copy-btn" onclick="copyOut('roi-output')">⬆ COPY TO CLIPBOARD</button>
-━━━ HVAC ROI BREAKDOWN ━━━━━━━━━━━━━━
+  el.innerHTML=`<button class="copy-btn" onclick="copyOut('roi-output')">^ COPY TO CLIPBOARD</button>
+--- HVAC ROI BREAKDOWN --------------
 
-Recovered Leads (${leads}/wk × ${fmt(jobval)}):
+Recovered Leads (${leads}/wk x ${fmt(jobval)}):
   ${fmt(leadVal)}/mo
 
-Admin Labor Saved (${hours}hrs × $${rate}/hr):
+Admin Labor Saved (${hours}hrs x $${rate}/hr):
   ${fmt(laborVal)}/mo
 
 Review / Reputation Value:
   ${fmt(reviews)}/mo
 
-────────────────────────────────
+--------------------------------
 TOTAL MONTHLY VALUE:   ${fmt(total)}/mo
 Your Investment:       ${fmt(fee)}/mo
 NET MONTHLY GAIN:      ${fmt(net)}/mo
 ROI:                   ${roi}%
 ANNUAL NET VALUE:      ${fmt(net*12)}
 
-━━━ PITCH LINE ━━━━━━━━━━━━━━━━━
+--- PITCH LINE -----------------
 
 "${fmt(fee)}/month gets you back ${fmt(total)}/month.
-That's $${mult} for every $1 invested —
+That's $${mult} for every $1 invested --
 most owners see it in the first 2 weeks."`;
 }
 
