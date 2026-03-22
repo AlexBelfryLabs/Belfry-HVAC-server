@@ -1,9 +1,9 @@
 {
   "name": "hvac-toolkit-server",
   "version": "1.0.0",
-  "description": "Backend proxy server for HVAC AI Audit Toolkit",
   "main": "server.js",
   "scripts": {
+    "prestart": "npm install",
     "start": "node server.js"
   },
   "engines": {
