@@ -1,49 +1,74 @@
-const express = require(‘express’);
-const cors = require(‘cors’);
-const path = require(‘path’);
+const http = require('http');
+const https = require('https');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const server = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-// Serve the toolkit HTML at /
-app.get(’/’, (req, res) => {
-res.sendFile(path.join(__dirname, ‘toolkit.html’));
-});
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
 
-// Proxy endpoint for AI calls
-app.post(’/api/chat’, async (req, res) => {
-const { prompt } = req.body;
-if (!prompt) {
-return res.status(400).json({ error: ‘No prompt provided’ });
-}
-try {
-const response = await fetch(‘https://api.anthropic.com/v1/messages’, {
-method: ‘POST’,
-headers: {
-‘Content-Type’: ‘application/json’,
-‘x-api-key’: process.env.ANTHROPIC_API_KEY,
-‘anthropic-version’: ‘2023-06-01’
-},
-body: JSON.stringify({
-model: ‘claude-sonnet-4-20250514’,
-max_tokens: 1000,
-messages: [{ role: ‘user’, content: prompt }]
-})
-});
-const data = await response.json();
-if (data.error) {
-return res.status(500).json({ error: data.error.message });
-}
-const text = data.content.map(i => i.text || ‘’).join(’\n’);
-res.json({ result: text });
-} catch (err) {
-console.error(‘API error:’, err);
-res.status(500).json({ error: ‘Server error. Check your API key.’ });
-}
+  if (req.method === 'GET' && req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Belfry Labs server is running.');
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/api/chat') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const { prompt } = JSON.parse(body);
+        const postData = JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        });
+        const options = {
+          hostname: 'api.anthropic.com',
+          path: '/v1/messages',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': process.env.ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01',
+            'Content-Length': Buffer.byteLength(postData)
+          }
+        };
+        const apiReq = https.request(options, (apiRes) => {
+          let data = '';
+          apiRes.on('data', chunk => data += chunk);
+          apiRes.on('end', () => {
+            const parsed = JSON.parse(data);
+            const text = parsed.content.map(i => i.text || '').join('\n');
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ result: text }));
+          });
+        });
+        apiReq.on('error', (e) => {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: e.message }));
+        });
+        apiReq.write(postData);
+        apiReq.end();
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  res.writeHead(404);
+  res.end('Not found');
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, ‘0.0.0.0’, () => {
-console.log(’Server running on port ’ + PORT);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log('Server running on port ' + PORT);
 });
