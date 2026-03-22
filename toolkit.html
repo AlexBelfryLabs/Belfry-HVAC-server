@@ -9,133 +9,119 @@
 <meta name="apple-mobile-web-app-title" content="Belfry Labs">
 <title>Belfry Labs</title>
 <style>
-  :root {
-    --bg: #0f1117;
-    --surface: #1a1f2e;
-    --surface2: #222840;
-    --border: #2e3a50;
-    --border2: #3d4f6b;
-    --accent: #ff6b2b;
-    --accent2: #38bdf8;
-    --accent3: #4ade80;
-    --text: #ffffff;
-    --muted: #ffffff;
-    --steel: #111827;
-    --nav-h: 68px;
-    --header-h: 56px;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+- { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body { height:100%; overflow:hidden; }
-  body { font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background:var(--bg); color:#ffffff; display:flex; flex-direction:column; }
+  body { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; background:#0f1117; color:#ffffff; display:flex; flex-direction:column; }
 
 header {
-height:var(–header-h); background:var(–steel); border-bottom:3px solid var(–accent);
+height:56px; background:#111827; border-bottom:3px solid #ff6b2b;
 display:flex; align-items:center; justify-content:space-between; padding:0 20px;
 flex-shrink:0; position:relative; z-index:10;
 }
 .logo { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:900; font-size:24px; letter-spacing:2px; color:#fff; text-transform:uppercase; line-height:1; }
-.logo span { color:var(–accent); }
+.logo span { color:#ff6b2b; }
 .logo-sub { font-size:8px; letter-spacing:3px; color:rgba(255,255,255,0.75); text-transform:uppercase; margin-top:2px; }
-.tab-title { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#ffffff; background:var(–accent); border:1px solid var(–accent); padding:5px 12px; }
+.tab-title { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#ffffff; background:#ff6b2b; border:1px solid #ff6b2b; padding:5px 12px; }
 
-.scroll-area { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; padding-bottom:calc(var(–nav-h) + 80px); }
+.scroll-area { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; padding-bottom:148px; }
 
 .panel { display:none; padding:20px 16px 8px; }
 .panel.active { display:block; animation:fadeUp 0.2s ease; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
 .bottom-nav {
-height:var(–nav-h); background:var(–steel); border-top:2px solid var(–border);
+height:68px; background:#111827; border-top:2px solid #2e3a50;
 display:flex; align-items:stretch; flex-shrink:0; position:relative; z-index:5;
 padding-bottom:env(safe-area-inset-bottom);
 }
 .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.4); transition:color 0.15s; padding:8px 4px; min-width:0; }
-.nav-btn.active { color:var(–accent); }
+.nav-btn.active { color:#ff6b2b; }
 .nav-btn:active { background:rgba(0,0,0,0.06); }
 .nav-icon { font-size:20px; line-height:1; }
 .nav-label { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:10px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; white-space:nowrap; }
 
-.page-tag { display:inline-block; background:var(–accent2); color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; padding:4px 10px; margin-bottom:8px; }
+.page-tag { display:inline-block; background:#38bdf8; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; padding:4px 10px; margin-bottom:8px; }
 h1 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:28px; font-weight:800; line-height:1.1; margin-bottom:6px; }
-h1 span { color:var(–accent); }
+h1 span { color:#ff6b2b; }
 .subtitle { font-size:14px; color:#ffffff; margin-bottom:20px; font-weight:400; line-height:1.6; }
 h2 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:16px; font-weight:700; color:#ffffff; margin-bottom:8px; }
 h3 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#ff6b2b; margin-bottom:8px; }
 p { font-size:14px; color:#ffffff; line-height:1.7; font-weight:400; }
 
 .section-label { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#38bdf8; margin:22px 0 14px; display:flex; align-items:center; gap:10px; }
-.section-label::before { content:’>’; font-size:7px; color:var(–accent); }
-.section-label::after { content:’’; flex:1; height:1px; background:var(–border); }
+.section-label::before { content:’>’; font-size:7px; color:#ff6b2b; }
+.section-label::after { content:’’; flex:1; height:1px; background:#2e3a50; }
 
-.card { background:var(–surface); border:1px solid var(–border); border-left:3px solid var(–border2); padding:16px; margin-bottom:10px; }
-.card.accent-left { border-left-color:var(–accent); }
-.card.blue-left { border-left-color:var(–accent2); }
-.card.green-left { border-left-color:var(–accent3); }
+.card { background:#1a1f2e; border:1px solid #2e3a50; border-left:3px solid #3d4f6b; padding:16px; margin-bottom:10px; }
+.card.accent-left { border-left-color:#ff6b2b; }
+.card.blue-left { border-left-color:#38bdf8; }
+.card.green-left { border-left-color:#4ade80; }
 
 label { display:block; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#ffffff; margin-bottom:8px; }
-input,select,textarea { width:100%; background:var(–surface2); border:1px solid var(–border); border-bottom:2px solid var(–border2); color:#ffffff; padding:13px 14px; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:15px; outline:none; transition:border-color 0.2s; min-height:48px; border-radius:0; -webkit-appearance:none; appearance:none; }
-input:focus,select:focus,textarea:focus { border-color:var(–accent2); border-bottom-color:var(–accent); }
+input,select,textarea { width:100%; background:#222840; border:1px solid #2e3a50; border-bottom:2px solid #3d4f6b; color:#ffffff; padding:13px 14px; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:15px; outline:none; transition:border-color 0.2s; min-height:48px; border-radius:0; -webkit-appearance:none; appearance:none; }
+input:focus,select:focus,textarea:focus { border-color:#38bdf8; border-bottom-color:#ff6b2b; }
 input::placeholder, textarea::placeholder { color:#8899aa; opacity:1; }
 ::-webkit-input-placeholder { color:#8899aa; opacity:1; }
 select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23ffffff’ d=‘M1 1l5 5 5-5’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; color:#ffffff; }
-select option { background:var(–surface2); color:#ffffff; }
+select option { background:#222840; color:#ffffff; }
 textarea { resize:vertical; min-height:90px; }
 .form-row { margin-bottom:14px; }
 
 .btn { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:14px 24px; position:relative; z-index:6; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border:none; transition:all 0.15s; width:100%; }
-.btn-primary { background:var(–accent); color:#ffffff; font-weight:800; }
+.btn-primary { background:#ff6b2b; color:#ffffff; font-weight:800; }
 .btn-primary:active { filter:brightness(0.85); }
-.btn-steel { background:var(–accent2); color:#ffffff; }
+.btn-steel { background:#38bdf8; color:#ffffff; }
 .btn-steel:active { filter:brightness(0.85); }
-.btn-outline { background:var(–surface2); border:1px solid var(–border2); color:#ffffff; font-size:13px; min-height:56px; text-align:left; justify-content:flex-start; padding:14px 16px; letter-spacing:0; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; width:100%; margin-bottom:10px; display:block; cursor:pointer; }
-.btn-outline:active { border-color:var(–accent); color:var(–accent); }
+.btn-outline { background:#222840; border:1px solid #3d4f6b; color:#ffffff; font-size:13px; min-height:56px; text-align:left; justify-content:flex-start; padding:14px 16px; letter-spacing:0; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; width:100%; margin-bottom:10px; display:block; cursor:pointer; }
+.btn-outline:active { border-color:#ff6b2b; color:#ff6b2b; }
 
-.output { background:var(–surface2); border-left:3px solid var(–accent); padding:18px 16px; margin-top:16px; font-size:14px; line-height:1.85; white-space:pre-wrap; display:none; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; word-break:break-word; }
+.output { background:#222840; border-left:3px solid #ff6b2b; padding:18px 16px; margin-top:16px; font-size:14px; line-height:1.85; white-space:pre-wrap; display:none; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; word-break:break-word; }
 .output.show { display:block; animation:fadeUp 0.3s ease; }
 
-.copy-btn { display:block; width:100%; margin-bottom:14px; background:var(–surface2); border:1px solid var(–border); color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:10px; cursor:pointer; min-height:40px; }
-.copy-btn:active { color:var(–accent); border-color:var(–accent); }
+.copy-btn { display:block; width:100%; margin-bottom:14px; background:#222840; border:1px solid #2e3a50; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:10px; cursor:pointer; min-height:40px; }
+.copy-btn:active { color:#ff6b2b; border-color:#ff6b2b; }
 
 .checklist { list-style:none; }
-.checklist li { padding:13px 0; border-bottom:1px solid var(–border); display:flex; align-items:center; gap:14px; font-size:15px; cursor:pointer; color:#ffffff; font-weight:400; min-height:48px; }
+.checklist li { padding:13px 0; border-bottom:1px solid #2e3a50; display:flex; align-items:center; gap:14px; font-size:15px; cursor:pointer; color:#ffffff; font-weight:400; min-height:48px; }
 .checklist li:last-child { border-bottom:none; }
-.check-box { width:24px; height:24px; border:2px solid var(–border2); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; transition:all 0.15s; }
-.check-box.checked { background:var(–accent); border-color:var(–accent); color:#fff; }
+.check-box { width:24px; height:24px; border:2px solid #3d4f6b; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; transition:all 0.15s; }
+.check-box.checked { background:#ff6b2b; border-color:#ff6b2b; color:#fff; }
 
 .score-bar { height:6px; background:#e0e0e0; margin:5px 0 10px; }
 .score-fill { height:100%; transition:width 0.6s ease; }
 .score-label { display:flex; justify-content:space-between; font-size:10px; color:#ffffff; margin-bottom:3px; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; letter-spacing:1px; text-transform:uppercase; }
 
 .stats-row { display:flex; gap:8px; margin-bottom:16px; }
-.stat-box { background:var(–surface); border:1px solid var(–border); padding:16px; text-align:center; flex:1; }
-.stat-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:26px; font-weight:800; color:var(–accent); line-height:1; }
+.stat-box { background:#1a1f2e; border:1px solid #2e3a50; padding:16px; text-align:center; flex:1; }
+.stat-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:26px; font-weight:800; color:#ff6b2b; line-height:1; }
 .stat-label { font-size:11px; color:#ffffff; letter-spacing:0.5px; text-transform:uppercase; margin-top:3px; }
 
-.price-card { background:var(–surface); border:1px solid var(–border); padding:18px 16px; margin-bottom:10px; position:relative; }
-.price-card.featured { border-color:var(–accent); }
-.price-card.featured::before { content:‘MOST SOLD’; position:absolute; top:-1px; right:-1px; background:var(–accent); color:#ffffff; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:9px; font-weight:700; letter-spacing:2px; padding:3px 8px; }
+.price-card { background:#1a1f2e; border:1px solid #2e3a50; padding:18px 16px; margin-bottom:10px; position:relative; }
+.price-card.featured { border-color:#ff6b2b; }
+.price-card.featured::before { content:‘MOST SOLD’; position:absolute; top:-1px; right:-1px; background:#ff6b2b; color:#ffffff; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:9px; font-weight:700; letter-spacing:2px; padding:3px 8px; }
 .price-row { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
-.price-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:32px; font-weight:800; color:var(–accent); line-height:1; }
+.price-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:32px; font-weight:800; color:#ff6b2b; line-height:1; }
 .price-period { font-size:12px; color:#ffffff; }
 .price-features { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-.price-feat { font-size:11px; color:#ffffff; background:var(–surface2); border:1px solid var(–border); padding:3px 8px; }
+.price-feat { font-size:11px; color:#ffffff; background:#222840; border:1px solid #2e3a50; padding:3px 8px; }
 
-.pain-card { background:var(–surface); border:1px solid var(–border); border-top:3px solid var(–accent); padding:14px 16px; margin-bottom:10px; }
+.pain-card { background:#1a1f2e; border:1px solid #2e3a50; border-top:3px solid #ff6b2b; padding:14px 16px; margin-bottom:10px; }
 .pain-card p strong { color:#ffffff; }
 
-.alert { background:var(–surface2); border:1px solid var(–border); border-left:3px solid var(–accent); padding:12px 14px; font-size:13px; color:#ffffff; margin-bottom:16px; }
-.alert strong { color:var(–accent); -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; letter-spacing:1px; }
+.alert { background:#222840; border:1px solid #2e3a50; border-left:3px solid #ff6b2b; padding:12px 14px; font-size:13px; color:#ffffff; margin-bottom:16px; }
+.alert strong { color:#ff6b2b; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; letter-spacing:1px; }
 
-.loading { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.15); border-top-color:var(–accent); border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:8px; }
+.loading { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.15); border-top-color:#ff6b2b; border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:8px; }
 @keyframes spin { to{transform:rotate(360deg)} }
 
-.score-card { background:var(–surface); border:1px solid var(–border); border-left:3px solid var(–border2); padding:14px 16px; margin-bottom:10px; }
+.score-card { background:#1a1f2e; border:1px solid #2e3a50; border-left:3px solid #3d4f6b; padding:14px 16px; margin-bottom:10px; }
 .score-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
 .score-card-title { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#ffffff; line-height:1.2; }
 .score-card-desc { font-size:11px; color:#ffffff; margin-top:2px; }
 .score-select { min-width:120px; width:120px; flex-shrink:0; }
 
-hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
+hr { border:none; border-top:1px solid #2e3a50; margin:20px 0; }
 .mt-12 { margin-top:12px; }
 .mt-16 { margin-top:16px; }
 </style>
@@ -450,9 +436,9 @@ function updateBar(id,val){
   const bar=document.getElementById('bar-'+id);
   const lbl=document.getElementById('gap-'+id);
   bar.style.width=pct+'%';
-  bar.style.background=pct>60?'var(--accent)':pct>30?'#f59e0b':'var(--accent3)';
+  bar.style.background=pct>60?'#ff6b2b':pct>30?'#f59e0b':'#4ade80';
   lbl.textContent=pct>60?'HIGH opportunity':pct>30?'Medium':'Low';
-  lbl.style.color=pct>60?'var(--accent)':pct>30?'#f59e0b':'var(--accent3)';
+  lbl.style.color=pct>60?'#ff6b2b':pct>30?'#f59e0b':'#4ade80';
 }
 
 async function genAudit(){
@@ -610,30 +596,14 @@ function calcROI(){
   const fmt=n=>'$'+n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
   const el=document.getElementById('roi-output');
   el.classList.add('show');
-  el.innerHTML=`<button class="copy-btn" onclick="copyOut('roi-output')">^ COPY TO CLIPBOARD</button>
---- HVAC ROI BREAKDOWN --------------
-
-Recovered Leads (${leads}/wk x ${fmt(jobval)}):
-  ${fmt(leadVal)}/mo
-
-Admin Labor Saved (${hours}hrs x $${rate}/hr):
-  ${fmt(laborVal)}/mo
-
-Review / Reputation Value:
-  ${fmt(reviews)}/mo
-
---------------------------------
-TOTAL MONTHLY VALUE:   ${fmt(total)}/mo
-Your Investment:       ${fmt(fee)}/mo
-NET MONTHLY GAIN:      ${fmt(net)}/mo
-ROI:                   ${roi}%
-ANNUAL NET VALUE:      ${fmt(net*12)}
-
---- PITCH LINE -----------------
-
-"${fmt(fee)}/month gets you back ${fmt(total)}/month.
-That's $${mult} for every $1 invested --
-most owners see it in the first 2 weeks."`;
+  var rb=document.createElement("button");
+  rb.className="copy-btn";rb.textContent="^ COPY TO CLIPBOARD";
+  rb.addEventListener("click",function(){copyOut("roi-output");});
+  el.innerHTML="";el.appendChild(rb);
+  var rt=document.createElement("div");
+  rt.style.whiteSpace="pre-wrap";
+  rt.textContent="HVAC ROI BREAKDOWN\n\nRecovered Leads ("+leads+"/wk x "+fmt(jobval)+"):\n  "+fmt(leadVal)+"/mo\n\nAdmin Labor Saved ("+hours+"hrs x $"+rate+"/hr):\n  "+fmt(laborVal)+"/mo\n\nReputation Value: "+fmt(reviews)+"/mo\n\nTOTAL VALUE: "+fmt(total)+"/mo\nYour Fee: "+fmt(fee)+"/mo\nNET GAIN: "+fmt(net)+"/mo\nROI: "+roi+"%\nANNUAL: "+fmt(net*12)+"\n\nPITCH: "+fmt(fee)+"/mo gets you "+fmt(total)+"/mo back.\nThat is $"+mult+" per $1 invested.";
+  el.appendChild(rt);
 }
 
 async function genAutomationIdeas(){
