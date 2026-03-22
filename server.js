@@ -1,5 +1,7 @@
 const http = require('http');
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,15 +15,23 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET' && req.url === '/') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Belfry Labs server is running.');
+    const filePath = path.join(__dirname, 'toolkit.html');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500);
+        res.end('Error loading toolkit: ' + err.message);
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    });
     return;
   }
 
   if (req.method === 'POST' && req.url === '/api/chat') {
     let body = '';
     req.on('data', chunk => body += chunk);
-    req.on('end', async () => {
+    req.on('end', () => {
       try {
         const { prompt } = JSON.parse(body);
         const postData = JSON.stringify({
