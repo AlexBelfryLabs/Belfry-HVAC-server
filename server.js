@@ -28,7 +28,6 @@ messages: [{ role: ‘user’, content: prompt }]
 })
 });
 
-```
 const data = await response.json();
 
 if (data.error) {
@@ -37,7 +36,6 @@ if (data.error) {
 
 const text = data.content.map(i => i.text || '').join('\n');
 res.json({ result: text });
-```
 
 } catch (err) {
 console.error(‘API error:’, err);
@@ -51,6 +49,6 @@ res.send(‘HVAC Toolkit server is running.’);
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
