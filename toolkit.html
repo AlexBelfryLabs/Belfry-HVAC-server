@@ -356,9 +356,31 @@ document.addEventListener('DOMContentLoaded', initCheckboxes);
 setTimeout(initCheckboxes, 500);
 function getChecked(id){return Array.from(document.querySelectorAll('#'+id+' li')).filter(li=>li.querySelector('.check-box').classList.contains('checked')).map(li=>li.textContent.trim());}
 function showLoading(id){const el=document.getElementById(id);el.classList.add('show');el.innerHTML='<span class="loading"></span> Generating...';}
-function renderOutput(id,text){const el=document.getElementById(id);el.innerHTML='<button class="copy-btn" onclick="copyOut(''+id+'')">^ COPY TO CLIPBOARD</button>'+text;el.classList.add('show');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
-function copyOut(id){const text=document.getElementById(id).innerText.replace('^ COPY TO CLIPBOARD
-','');navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(id).querySelector('.copy-btn');btn.textContent='v COPIED!';setTimeout(()=>btn.textContent='^ COPY TO CLIPBOARD',2000);});}
+function renderOutput(id,text){
+  var el=document.getElementById(id);
+  var btn=document.createElement('button');
+  btn.className='copy-btn';
+  btn.textContent='^ COPY TO CLIPBOARD';
+  btn.addEventListener('click',function(){copyOut(id);});
+  el.innerHTML='';
+  el.appendChild(btn);
+  var pre=document.createElement('div');
+  pre.textContent=text;
+  el.appendChild(pre);
+  el.classList.add('show');
+  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+function copyOut(id){
+  var el=document.getElementById(id);
+  var fullText=el.innerText||el.textContent;
+  var text=fullText.replace('^ COPY TO CLIPBOARD','').trim();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      var btn=el.querySelector('.copy-btn');
+      if(btn){btn.textContent='v COPIED!';setTimeout(function(){btn.textContent='^ COPY TO CLIPBOARD';},2000);}
+    });
+  }
+}
 // Paste your Replit URL here after setup (Step 6 in the guide)
 const SERVER_URL = 'https://belfry-hvac-server.onrender.com/api/chat';
 
