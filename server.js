@@ -1,46 +1,684 @@
-const express = require('express');
-const cors = require('cors');
+const express = require(‘express’);
+const cors = require(‘cors’);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/api/chat', async (req, res) => {
-  const { prompt } = req.body;
-  if (!prompt) {
-    return res.status(400).json({ error: 'No prompt provided' });
+// Serve the toolkit directly at /
+app.get(’/’, (req, res) => {
+res.setHeader(‘Content-Type’, ‘text/html’);
+res.send(`<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Belfry Labs">
+<title>Belfry Labs</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1f2e;
+    --surface2: #222840;
+    --border: #2e3a50;
+    --border2: #3d4f6b;
+    --accent: #ff6b2b;
+    --accent2: #38bdf8;
+    --accent3: #4ade80;
+    --text: #ffffff;
+    --muted: #ffffff;
+    --steel: #111827;
+    --nav-h: 68px;
+    --header-h: 56px;
   }
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; overflow:hidden; }
+  body { font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background:var(--bg); color:#ffffff; display:flex; flex-direction:column; }
+
+header {
+height:var(–header-h); background:var(–steel); border-bottom:3px solid var(–accent);
+display:flex; align-items:center; justify-content:space-between; padding:0 20px;
+flex-shrink:0; position:relative; z-index:10;
+}
+.logo { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:900; font-size:24px; letter-spacing:2px; color:#fff; text-transform:uppercase; line-height:1; }
+.logo span { color:var(–accent); }
+.logo-sub { font-size:8px; letter-spacing:3px; color:rgba(255,255,255,0.75); text-transform:uppercase; margin-top:2px; }
+.tab-title { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#ffffff; background:var(–accent); border:1px solid var(–accent); padding:5px 12px; }
+
+.scroll-area { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; padding-bottom:calc(var(–nav-h) + 16px); }
+
+.panel { display:none; padding:20px 16px 8px; }
+.panel.active { display:block; animation:fadeUp 0.2s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.bottom-nav {
+height:var(–nav-h); background:var(–steel); border-top:2px solid var(–border);
+display:flex; align-items:stretch; flex-shrink:0; position:relative; z-index:10;
+padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.4); transition:color 0.15s; padding:8px 4px; min-width:0; }
+.nav-btn.active { color:var(–accent); }
+.nav-btn:active { background:rgba(0,0,0,0.06); }
+.nav-icon { font-size:20px; line-height:1; }
+.nav-label { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:10px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; white-space:nowrap; }
+
+.page-tag { display:inline-block; background:var(–accent2); color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; padding:4px 10px; margin-bottom:8px; }
+h1 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:28px; font-weight:800; line-height:1.1; margin-bottom:6px; }
+h1 span { color:var(–accent); }
+.subtitle { font-size:14px; color:#ffffff; margin-bottom:20px; font-weight:400; line-height:1.6; }
+h2 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:16px; font-weight:700; color:#ffffff; margin-bottom:8px; }
+h3 { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#ff6b2b; margin-bottom:8px; }
+p { font-size:14px; color:#ffffff; line-height:1.7; font-weight:400; }
+
+.section-label { font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#38bdf8; margin:22px 0 14px; display:flex; align-items:center; gap:10px; }
+.section-label::before { content:‘▶’; font-size:7px; color:var(–accent); }
+.section-label::after { content:’’; flex:1; height:1px; background:var(–border); }
+
+.card { background:var(–surface); border:1px solid var(–border); border-left:3px solid var(–border2); padding:16px; margin-bottom:10px; }
+.card.accent-left { border-left-color:var(–accent); }
+.card.blue-left { border-left-color:var(–accent2); }
+.card.green-left { border-left-color:var(–accent3); }
+
+label { display:block; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#ffffff; margin-bottom:8px; }
+input,select,textarea { width:100%; background:var(–surface2); border:1px solid var(–border); border-bottom:2px solid var(–border2); color:#ffffff; padding:13px 14px; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:15px; outline:none; transition:border-color 0.2s; min-height:48px; border-radius:0; -webkit-appearance:none; appearance:none; }
+input:focus,select:focus,textarea:focus { border-color:var(–accent2); border-bottom-color:var(–accent); }
+input::placeholder, textarea::placeholder { color:#8899aa; opacity:1; }
+::-webkit-input-placeholder { color:#8899aa; opacity:1; }
+select { background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%239ca3b0’ d=‘M1 1l5 5 5-5’/%3E%3C/svg%3E”); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
+select option { background:var(–surface2); color:#ffffff; }
+textarea { resize:vertical; min-height:90px; }
+.form-row { margin-bottom:14px; }
+
+.btn { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:14px 24px; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border:none; transition:all 0.15s; width:100%; }
+.btn-primary { background:var(–accent); color:#fff; }
+.btn-primary:active { filter:brightness(0.85); }
+.btn-steel { background:var(–accent2); color:#ffffff; }
+.btn-steel:active { filter:brightness(0.85); }
+.btn-outline { background:var(–surface2); border:1px solid var(–border2); color:#ffffff; font-size:13px; min-height:56px; text-align:left; justify-content:flex-start; padding:14px 16px; letter-spacing:0; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; width:100%; margin-bottom:10px; display:block; cursor:pointer; }
+.btn-outline:active { border-color:var(–accent); color:var(–accent); }
+
+.output { background:var(–surface2); border-left:3px solid var(–accent); padding:18px 16px; margin-top:16px; font-size:14px; line-height:1.85; white-space:pre-wrap; display:none; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-weight:400; word-break:break-word; }
+.output.show { display:block; animation:fadeUp 0.3s ease; }
+
+.copy-btn { display:block; width:100%; margin-bottom:14px; background:var(–surface2); border:1px solid var(–border); color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:10px; cursor:pointer; min-height:40px; }
+.copy-btn:active { color:var(–accent); border-color:var(–accent); }
+
+.checklist { list-style:none; }
+.checklist li { padding:13px 0; border-bottom:1px solid var(–border); display:flex; align-items:center; gap:14px; font-size:15px; cursor:pointer; color:#ffffff; font-weight:400; min-height:48px; }
+.checklist li:last-child { border-bottom:none; }
+.check-box { width:24px; height:24px; border:2px solid var(–border2); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; transition:all 0.15s; }
+.check-box.checked { background:var(–accent); border-color:var(–accent); color:#fff; }
+
+.score-bar { height:6px; background:#e0e0e0; margin:5px 0 10px; }
+.score-fill { height:100%; transition:width 0.6s ease; }
+.score-label { display:flex; justify-content:space-between; font-size:10px; color:#ffffff; margin-bottom:3px; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; letter-spacing:1px; text-transform:uppercase; }
+
+.stats-row { display:flex; gap:8px; margin-bottom:16px; }
+.stat-box { background:var(–surface); border:1px solid var(–border); padding:16px; text-align:center; flex:1; }
+.stat-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:26px; font-weight:800; color:var(–accent); line-height:1; }
+.stat-label { font-size:11px; color:#ffffff; letter-spacing:0.5px; text-transform:uppercase; margin-top:3px; }
+
+.price-card { background:var(–surface); border:1px solid var(–border); padding:18px 16px; margin-bottom:10px; position:relative; }
+.price-card.featured { border-color:var(–accent); }
+.price-card.featured::before { content:‘MOST SOLD’; position:absolute; top:-1px; right:-1px; background:var(–accent); color:#ffffff; -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:9px; font-weight:700; letter-spacing:2px; padding:3px 8px; }
+.price-row { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+.price-num { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:32px; font-weight:800; color:var(–accent); line-height:1; }
+.price-period { font-size:12px; color:#ffffff; }
+.price-features { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.price-feat { font-size:11px; color:#ffffff; background:var(–surface2); border:1px solid var(–border); padding:3px 8px; }
+
+.pain-card { background:var(–surface); border:1px solid var(–border); border-top:3px solid var(–accent); padding:14px 16px; margin-bottom:10px; }
+.pain-card p strong { color:#ffffff; }
+
+.alert { background:var(–surface2); border:1px solid var(–border); border-left:3px solid var(–accent); padding:12px 14px; font-size:13px; color:#ffffff; margin-bottom:16px; }
+.alert strong { color:var(–accent); -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; letter-spacing:1px; }
+
+.loading { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.15); border-top-color:var(–accent); border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:8px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.score-card { background:var(–surface); border:1px solid var(–border); border-left:3px solid var(–border2); padding:14px 16px; margin-bottom:10px; }
+.score-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
+.score-card-title { -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Helvetica, Arial, sans-serif; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#ffffff; line-height:1.2; }
+.score-card-desc { font-size:11px; color:#ffffff; margin-top:2px; }
+.score-select { min-width:120px; width:120px; flex-shrink:0; }
+
+hr { border:none; border-top:1px solid var(–border); margin:20px 0; }
+.mt-12 { margin-top:12px; }
+.mt-16 { margin-top:16px; }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">BELFRY <span>LABS</span></div>
+    <div class="logo-sub">HVAC Audit Toolkit</div>
+  </div>
+  <div class="tab-title" id="current-tab-label">Discovery</div>
+</header>
+
+<div class="scroll-area" id="scroll-area">
+
+  <!-- DISCOVERY -->
+
+  <div id="tab-discovery" class="panel active">
+    <div class="page-tag">Step 01</div>
+    <h1>Discovery <span>Call</span></h1>
+    <p class="subtitle">Fill out live during the call. Hit generate for an instant opportunity summary.</p>
+    <div class="alert"><strong>PRO TIP —</strong> Ask "How many calls do you miss or follow up late each week?" — this number unlocks the whole ROI conversation.</div>
+    <div class="section-label">Company Profile</div>
+    <div class="form-row"><label>Company Name</label><input type="text" id="d-biz" placeholder="e.g. Riverside Heating & Cooling"></div>
+    <div class="form-row"><label>Owner Name</label><input type="text" id="d-owner" placeholder="e.g. Mike Torres"></div>
+    <div class="form-row"><label>Number of Technicians</label><select id="d-techs"><option value="">Select...</option><option>1–2 (owner-operator)</option><option>3–5 techs</option><option>6–15 techs</option><option>15+ techs</option></select></div>
+    <div class="form-row"><label>Monthly Revenue (approx)</label><select id="d-rev"><option value="">Select...</option><option>Under $30k</option><option>$30k–$80k</option><option>$80k–$200k</option><option>$200k+</option></select></div>
+    <div class="form-row"><label>Current Software / Tools</label><input type="text" id="d-tools" placeholder="e.g. ServiceTitan, Jobber, pen & paper"></div>
+    <div class="form-row"><label>Calls / Leads Per Week</label><input type="text" id="d-leads" placeholder="e.g. ~30 inbound calls/week"></div>
+    <div class="form-row"><label>Busy Season</label><select id="d-season"><option value="">Select...</option><option>Summer (AC focused)</option><option>Winter (heat focused)</option><option>Both peaks</option><option>Year-round steady</option></select></div>
+    <div class="section-label">Pain Points — Tap to Select</div>
+    <ul class="checklist" id="pain-list">
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Missed / slow follow-ups on estimates</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Manual scheduling & dispatch</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No-shows — reminders are manual</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Invoices sent late or chased</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> After-hours leads go unanswered</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Not asking for Google reviews</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Maintenance contract renewals manual</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No visibility into tech / job status</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> No system to re-market past customers</li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div> Parts / inventory tracked on paper</li>
+    </ul>
+    <div class="section-label">Key Notes</div>
+    <div class="form-row"><label>Their Biggest Bottleneck (their words)</label><textarea id="d-bottleneck" placeholder="Write it exactly as they say it — their language = your pitch."></textarea></div>
+    <div class="form-row"><label>Extra Notes (budget, urgency, decision makers)</label><textarea id="d-notes" placeholder="Anything else worth remembering..."></textarea></div>
+    <button class="btn btn-primary" onclick="genDiscovery()">Generate Opportunity Summary →</button>
+    <div class="output" id="discovery-output"></div>
+  </div>
+
+  <!-- AUDIT -->
+
+  <div id="tab-audit" class="panel">
+    <div class="page-tag">Step 02</div>
+    <h1>AI <span>Audit</span></h1>
+    <p class="subtitle">Score this HVAC company across 8 areas. Generates a client-ready audit report.</p>
+    <div class="form-row"><label>Company Name</label><input type="text" id="a-biz" placeholder="Company name"></div>
+    <div class="form-row"><label>Number of Techs</label><input type="text" id="a-techs" placeholder="e.g. 6 techs"></div>
+    <div class="section-label">Score Each Area — 1 = All Manual, 5 = Fully Automated</div>
+    <div id="audit-scores"></div>
+    <button class="btn btn-primary mt-12" onclick="genAudit()">Generate Audit Report →</button>
+    <div class="output" id="audit-output"></div>
+  </div>
+
+  <!-- PROPOSAL -->
+
+  <div id="tab-proposal" class="panel">
+    <div class="page-tag">Step 03</div>
+    <h1>Proposal <span>Builder</span></h1>
+    <p class="subtitle">Generate a sharp, HVAC-specific proposal. Ready to copy and send.</p>
+    <div class="form-row"><label>Owner Name</label><input type="text" id="p-owner" placeholder="e.g. Mike Torres"></div>
+    <div class="form-row"><label>Company Name</label><input type="text" id="p-company" placeholder="e.g. Riverside Heating & Cooling"></div>
+    <div class="form-row"><label>Their #1 Pain (their words)</label><input type="text" id="p-pain" placeholder="e.g. We lose jobs because we don't call back fast enough"></div>
+    <div class="form-row"><label>Top Automations to Propose</label><input type="text" id="p-autos" placeholder="e.g. lead response bot, invoice automation, reviews"></div>
+    <div class="form-row"><label>Monthly Investment</label><select id="p-tier"><option>$750/mo — Starter</option><option>$1,500/mo — Growth</option><option>$2,000/mo — Growth+</option><option>$2,500/mo — Scale</option></select></div>
+    <div class="form-row"><label>Your Name / Business</label><input type="text" id="p-you" placeholder="Your name or agency"></div>
+    <button class="btn btn-primary" onclick="genProposal()">Generate Proposal →</button>
+    <div class="output" id="proposal-output"></div>
+  </div>
+
+  <!-- OUTREACH -->
+
+  <div id="tab-outreach" class="panel">
+    <div class="page-tag">Step 04</div>
+    <h1>Cold <span>Outreach</span></h1>
+    <p class="subtitle">HVAC-specific scripts that sound human. Tap generate, copy, send.</p>
+    <div class="form-row"><label>HVAC Sub-Niche</label><select id="o-niche"><option>Residential HVAC (general)</option><option>Commercial HVAC contractors</option><option>HVAC + plumbing combo shops</option><option>AC-only (warm climate)</option><option>Heating-only (cold climate)</option><option>HVAC maintenance / service contract focus</option></select></div>
+    <div class="form-row"><label>Company Size Target</label><select id="o-size"><option>Small (1–5 techs, owner-operator)</option><option>Medium (6–15 techs)</option><option>Growing (15–40 techs)</option></select></div>
+    <div class="form-row"><label>Your Name</label><input type="text" id="o-name" placeholder="Your first name"></div>
+    <div class="form-row"><label>Message Type</label><select id="o-type"><option>Cold Email — Initial Outreach</option><option>Cold Email — Follow Up #1 (day 3)</option><option>Cold Email — Follow Up #2 (day 7)</option><option>LinkedIn DM — Connection Request</option><option>LinkedIn DM — After Connect</option><option>SMS / Text Message</option><option>Voicemail Script</option></select></div>
+    <div class="form-row"><label>Specific Hook (optional)</label><input type="text" id="o-hook" placeholder="e.g. I saw you have 4.2 stars — easy fix"></div>
+    <button class="btn btn-primary" onclick="genOutreach()">Generate Script →</button>
+    <div class="output" id="outreach-output"></div>
+  </div>
+
+  <!-- OBJECTIONS -->
+
+  <div id="tab-objections" class="panel">
+    <div class="page-tag">Step 05</div>
+    <h1>Objection <span>Crusher</span></h1>
+    <p class="subtitle">Tap any objection for a word-for-word response. Or type a custom one.</p>
+    <div class="section-label">Common HVAC Objections — Tap One</div>
+    <div id="objection-grid"></div>
+    <div class="section-label">Custom Objection</div>
+    <div class="form-row"><textarea id="custom-obj" placeholder="Type exactly what they said..." style="min-height:70px;"></textarea></div>
+    <button class="btn btn-steel" onclick="handleCustomObj()">Handle This Objection →</button>
+    <div class="output" id="objection-output"></div>
+  </div>
+
+  <!-- PRICING -->
+
+  <div id="tab-pricing" class="panel">
+    <div class="page-tag">Step 06</div>
+    <h1>Pricing <span>&amp; ROI</span></h1>
+    <p class="subtitle">Show owners exactly what they get and why the fee is a fraction of what they're losing.</p>
+    <div class="section-label">Your Service Tiers</div>
+    <div class="price-card">
+      <div class="price-row"><div><h3>Starter</h3><div class="price-num">$750</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>1–3 techs</div></div>
+      <div class="price-features"><span class="price-feat">2 automations built</span><span class="price-feat">Lead response bot</span><span class="price-feat">Monthly reporting</span><span class="price-feat">Email support</span></div>
+    </div>
+    <div class="price-card featured">
+      <div class="price-row"><div><h3>Growth</h3><div class="price-num">$1,500</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>4–12 techs</div></div>
+      <div class="price-features"><span class="price-feat">4–6 automations</span><span class="price-feat">Full AI stack</span><span class="price-feat">Review automation</span><span class="price-feat">Weekly check-ins</span></div>
+    </div>
+    <div class="price-card">
+      <div class="price-row"><div><h3>Scale</h3><div class="price-num">$2,500</div><div class="price-period">/ month</div></div><div style="text-align:right;color:#ffffff;font-size:12px;">Best for<br>12+ techs</div></div>
+      <div class="price-features"><span class="price-feat">Unlimited automations</span><span class="price-feat">Custom AI builds</span><span class="price-feat">Slack access</span><span class="price-feat">Biweekly strategy</span></div>
+    </div>
+    <div class="section-label">ROI Calculator</div>
+    <div class="card accent-left">
+      <div class="form-row"><label>Missed / Slow Leads Per Week</label><input type="number" id="roi-leads" value="5" inputmode="numeric"></div>
+      <div class="form-row"><label>Average Job Value ($)</label><input type="number" id="roi-jobval" value="450" inputmode="numeric"></div>
+      <div class="form-row"><label>Admin Hours Wasted Per Week</label><input type="number" id="roi-hours" value="8" inputmode="numeric"></div>
+      <div class="form-row"><label>Staff Hourly Cost ($/hr)</label><input type="number" id="roi-rate" value="22" inputmode="numeric"></div>
+      <div class="form-row"><label>Your Monthly Fee ($)</label><input type="number" id="roi-fee" value="1500" inputmode="numeric"></div>
+      <div class="form-row"><label>Review / Reputation Value / mo ($)</label><input type="number" id="roi-reviews" value="500" inputmode="numeric"></div>
+      <button class="btn btn-primary mt-12" onclick="calcROI()">Calculate ROI →</button>
+    </div>
+    <div class="output" id="roi-output"></div>
+  </div>
+
+  <!-- INTEL -->
+
+  <div id="tab-intel" class="panel">
+    <div class="page-tag">Step 07</div>
+    <h1>HVAC <span>Intel</span></h1>
+    <p class="subtitle">Know their world better than they expect. The 8 money leaks, industry vocabulary, and prospecting sources.</p>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">100K+</div><div class="stat-label">HVAC Cos.</div></div>
+      <div class="stat-box"><div class="stat-num">$1.2M</div><div class="stat-label">Avg Rev</div></div>
+      <div class="stat-box"><div class="stat-num">~4%</div><div class="stat-label">Use AI</div></div>
+    </div>
+    <div class="section-label">The 8 Biggest Money Leaks</div>
+    <div class="pain-card"><h3>01 — After-Hours Lead Loss</h3><p>40–60% of HVAC calls come outside business hours. Without auto-response, those leads call the next company. At $450/job, 5 missed leads/week = <strong>$9,000+/month gone.</strong></p></div>
+    <div class="pain-card"><h3>02 — No-Show Appointments</h3><p>Industry no-show rate is 15–25% without reminders. A $300k/yr company loses $45–75k in wasted truck rolls. Automated SMS reminders cut this by 70%+.</p></div>
+    <div class="pain-card"><h3>03 — Slow Estimate Follow-Up</h3><p>78% of jobs go to the first company to respond. Automated estimate follow-up sequences close 20–35% more jobs with zero extra effort.</p></div>
+    <div class="pain-card"><h3>04 — Maintenance Contract Attrition</h3><p>Most companies lose 30–40% of SMA contracts yearly because renewals are tracked on spreadsheets or simply forgotten.</p></div>
+    <div class="pain-card"><h3>05 — Review Gap</h3><p>HVAC is hyper-local and SEO-driven. Most owners do great work but never ask. Automated post-job review requests add 20–50 reviews/month.</p></div>
+    <div class="pain-card"><h3>06 — Invoice Delays</h3><p>Average HVAC company carries $15–40k in outstanding receivables at any time — mostly due to process, not customer refusal.</p></div>
+    <div class="pain-card"><h3>07 — Dead Lead Reactivation</h3><p>Most companies have 500–2,000+ past customers never re-contacted. One reactivation campaign typically generates $10–30k in new jobs within 30 days.</p></div>
+    <div class="pain-card"><h3>08 — Dispatch Chaos</h3><p>Without smart scheduling, techs waste 45–90 min/day in dead drive time. At $75/hr loaded cost, that's $1,500–$3,000/tech/month in pure waste.</p></div>
+    <div class="section-label">Industry Language</div>
+    <div class="card blue-left">
+      <h3>Terms to Know</h3>
+      <p><strong style="color:#ffffff">Service call</strong> — diagnostic visit, $75–150<br><strong style="color:#ffffff">SMA / Maintenance agreement</strong> — recurring annual contract, $150–400/yr<br><strong style="color:#ffffff">Install</strong> — full system replacement, $4,000–$15,000<br><strong style="color:#ffffff">Truck roll</strong> — dispatching a tech, costs ~$75–150 loaded<br><strong style="color:#ffffff">Callback</strong> — return visit for unsatisfied repair<br><strong style="color:#ffffff">Flat rate vs T&M</strong> — flat rate pricing vs time &amp; materials</p>
+      <hr>
+      <h3>What They Actually Care About</h3>
+      <p><strong style="color:#ffffff">#1 More installs</strong> — highest margin jobs<br><strong style="color:#ffffff">#2 Maintenance contracts</strong> — predictable recurring cash<br><strong style="color:#ffffff">#3 Google reviews</strong> — drives all local lead flow<br><strong style="color:#ffffff">#4 Getting paid fast</strong> — cash flow tight in shoulder season<br><strong style="color:#ffffff">#5 Not working weekends</strong> — most owners are burned out</p>
+    </div>
+    <div class="section-label">Generate Automation Ideas</div>
+    <div class="card">
+      <div class="form-row"><label>Describe the Company Situation</label><textarea id="intel-situation" placeholder="e.g. 8 techs, uses Jobber, busy in summer, struggles with reviews and estimate follow-up"></textarea></div>
+      <button class="btn btn-primary" onclick="genAutomationIdeas()">Generate Custom Automation Ideas →</button>
+    </div>
+    <div class="output" id="intel-output"></div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('discovery','01 Discovery',this)"><span class="nav-icon">🔍</span><span class="nav-label">Discovery</span></button>
+  <button class="nav-btn" onclick="switchTab('audit','02 Audit',this)"><span class="nav-icon">📊</span><span class="nav-label">Audit</span></button>
+  <button class="nav-btn" onclick="switchTab('proposal','03 Proposal',this)"><span class="nav-icon">📄</span><span class="nav-label">Proposal</span></button>
+  <button class="nav-btn" onclick="switchTab('outreach','04 Outreach',this)"><span class="nav-icon">✉️</span><span class="nav-label">Outreach</span></button>
+  <button class="nav-btn" onclick="switchTab('objections','05 Objections',this)"><span class="nav-icon">🛡️</span><span class="nav-label">Objections</span></button>
+  <button class="nav-btn" onclick="switchTab('pricing','06 Pricing',this)"><span class="nav-icon">💰</span><span class="nav-label">Pricing</span></button>
+  <button class="nav-btn" onclick="switchTab('intel','07 Intel',this)"><span class="nav-icon">⚡</span><span class="nav-label">Intel</span></button>
+</nav>
+
+<script>
+function switchTab(name,label,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('current-tab-label').textContent=label||name;
+  document.getElementById('scroll-area').scrollTop=0;
+}
+function toggleCheck(el){
+  el.querySelector('.check-box').classList.toggle('checked');
+}
+// Make checkboxes work reliably on iPad Safari
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.checklist li').forEach(function(li) {
+    li.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      toggleCheck(this);
     });
-    const data = await response.json();
-    if (data.error) {
-      return res.status(500).json({ error: data.error.message });
-    }
-    const text = data.content.map(i => i.text || '').join('\n');
-    res.json({ result: text });
-  } catch (err) {
-    console.error('API error:', err);
-    res.status(500).json({ error: 'Server error. Check your API key.' });
-  }
+  });
+});
+function getChecked(id){return Array.from(document.querySelectorAll('#'+id+' li')).filter(li=>li.querySelector('.check-box').classList.contains('checked')).map(li=>li.textContent.trim());}
+function showLoading(id){const el=document.getElementById(id);el.classList.add('show');el.innerHTML='<span class="loading"></span> Generating...';}
+function renderOutput(id,text){const el=document.getElementById(id);el.innerHTML='<button class="copy-btn" onclick="copyOut(\\''+id+'\\')">⬆ COPY TO CLIPBOARD</button>'+text;el.classList.add('show');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
+function copyOut(id){const text=document.getElementById(id).innerText.replace('⬆ COPY TO CLIPBOARD
+','');navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(id).querySelector('.copy-btn');btn.textContent='✓ COPIED!';setTimeout(()=>btn.textContent='⬆ COPY TO CLIPBOARD',2000);});}
+// Paste your Replit URL here after setup (Step 6 in the guide)
+const SERVER_URL = 'https://belfry-hvac-server.onrender.com/api/chat';
+
+async function callClaude(prompt) {
+  const r = await fetch(SERVER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
+  if (!r.ok) throw new Error('Server error ' + r.status);
+  const data = await r.json();
+  if (data.error) throw new Error(data.error);
+  return data.result;
+}
+
+async function genDiscovery(){
+  const biz=document.getElementById('d-biz').value||'This HVAC Company';
+  const owner=document.getElementById('d-owner').value||'the owner';
+  const techs=document.getElementById('d-techs').value||'unknown';
+  const rev=document.getElementById('d-rev').value||'unknown';
+  const tools=document.getElementById('d-tools').value||'unknown';
+  const bottleneck=document.getElementById('d-bottleneck').value||'not captured';
+  const leads=document.getElementById('d-leads').value||'unknown';
+  const season=document.getElementById('d-season').value||'unknown';
+  const notes=document.getElementById('d-notes').value||'';
+  const pains=getChecked('pain-list').join('; ')||'not specified';
+  showLoading('discovery-output');
+  try{renderOutput('discovery-output',await callClaude(\`You are an expert AI automation consultant specializing in HVAC companies. Write a sharp internal opportunity summary based on this discovery call.
+
+Company: \${biz} | Owner: \${owner}
+Techs: \${techs} | Revenue: \${rev}/mo | Leads/wk: \${leads} | Season: \${season}
+Tools: \${tools}
+Pain Points: \${pains}
+Main Bottleneck: \${bottleneck}
+Notes: \${notes}
+
+Write:
+OPPORTUNITY SCORE: X/10 — one sentence why
+ESTIMATED ANNUAL REVENUE LEAK: dollar figure with math
+TOP 3 AUTOMATION WINS: specific to HVAC, tool suggestions, dollars/hours saved each
+RECOMMENDED TIER: $750/$1,500/$2,500 with one-line justification
+CLOSE STRATEGY: exact approach for this owner
+WATCH OUTS: 1-2 potential stalls
+
+Direct, specific, no filler.\`));}
+  catch(e){renderOutput('discovery-output','Connection error. Check API setup.');}
+}
+
+const auditAreas=[
+  {id:'leads',label:'Lead Response & After-Hours',desc:'Speed of response to inbound calls/web leads'},
+  {id:'scheduling',label:'Scheduling & Dispatch',desc:'Booking, reminders, tech routing'},
+  {id:'estimates',label:'Estimate Follow-Up',desc:"Following up on quotes that didn't close"},
+  {id:'invoicing',label:'Invoicing & Payments',desc:'Invoice speed and payment collection'},
+  {id:'reviews',label:'Review Generation',desc:'Asking for and managing Google reviews'},
+  {id:'maintenance',label:'Maintenance Contracts',desc:'Renewals, reminders, SMA tracking'},
+  {id:'reactivation',label:'Past Customer Reactivation',desc:'Marketing to old customers'},
+  {id:'reporting',label:'Reporting & Job Tracking',desc:'Owner visibility into jobs and revenue'},
+];
+
+function buildAuditForm(){
+  document.getElementById('audit-scores').innerHTML=auditAreas.map(a=>\`<div class="score-card"><div class="score-card-top"><div><div class="score-card-title">\${a.label}</div><div class="score-card-desc" style="color:#ffffff">\${a.desc}</div></div><select id="score-\${a.id}" class="score-select" onchange="updateBar('\${a.id}',this.value)"><option value="1">1 — Manual</option><option value="2">2 — Mostly manual</option><option value="3" selected>3 — Mixed</option><option value="4">4 — Mostly auto</option><option value="5">5 — Automated</option></select></div><div class="score-label"><span>Automation Gap</span><span id="gap-\${a.id}">Medium</span></div><div class="score-bar"><div class="score-fill" id="bar-\${a.id}" style="width:60%;"></div></div></div>\`).join('');
+  auditAreas.forEach(a=>updateBar(a.id,3));
+}
+
+function updateBar(id,val){
+  const pct=((6-parseInt(val))/5)*100;
+  const bar=document.getElementById('bar-'+id);
+  const lbl=document.getElementById('gap-'+id);
+  bar.style.width=pct+'%';
+  bar.style.background=pct>60?'var(--accent)':pct>30?'#f59e0b':'var(--accent3)';
+  lbl.textContent=pct>60?'HIGH opportunity':pct>30?'Medium':'Low';
+  lbl.style.color=pct>60?'var(--accent)':pct>30?'#f59e0b':'var(--accent3)';
+}
+
+async function genAudit(){
+  const biz=document.getElementById('a-biz').value||'This HVAC Company';
+  const techs=document.getElementById('a-techs').value||'unknown';
+  const scores=auditAreas.map(a=>\`\${a.label}: \${document.getElementById('score-'+a.id).value}/5\`).join('
+');
+  const avg=(auditAreas.reduce((s,a)=>s+parseInt(document.getElementById('score-'+a.id).value),0)/auditAreas.length).toFixed(1);
+  showLoading('audit-output');
+  try{renderOutput('audit-output',await callClaude(\`Write a professional client-facing HVAC AI Audit Report.
+
+Client: \${biz} | Techs: \${techs}
+Scores (1=manual, 5=automated):
+\${scores}
+Average: \${avg}/5
+
+HVAC AI AUDIT REPORT — \${biz.toUpperCase()}
+
+AUTOMATION MATURITY: X/10
+[One sentence framed around opportunity]
+
+EXECUTIVE SUMMARY
+[2-3 sentences. Lead with revenue/time opportunity. Make them feel the cost of inaction.]
+
+TOP 3 QUICK WINS
+[Each: automation name, tools, what it replaces, time to implement, dollar/hour value]
+
+12-MONTH OPPORTUNITY VALUE
+[Total annual value — show math]
+
+RECOMMENDED NEXT STEP
+[Specific, low-friction, easy to say yes]
+
+Confident, specific, no fluff.\`));}
+  catch(e){renderOutput('audit-output','Error. Try again.');}
+}
+
+async function genProposal(){
+  const owner=document.getElementById('p-owner').value||'there';
+  const company=document.getElementById('p-company').value||'your company';
+  const pain=document.getElementById('p-pain').value||'operational bottlenecks';
+  const autos=document.getElementById('p-autos').value||'key HVAC workflows';
+  const tier=document.getElementById('p-tier').value;
+  const you=document.getElementById('p-you').value||'Your AI Partner';
+  showLoading('proposal-output');
+  try{renderOutput('proposal-output',await callClaude(\`Write a concise compelling proposal email for an HVAC owner.
+
+From: \${you} | To: \${owner} at \${company}
+Pain: "\${pain}" | Automations: \${autos} | Investment: \${tier}
+
+SUBJECT: [punchy, specific]
+
+[Opening — 1 sentence mirroring their pain]
+
+HERES WHAT WELL BUILD FOR \${company.toUpperCase()}:
+- [Automation 1 — specific outcome]
+- [Automation 2 — specific outcome]
+- [Automation 3 — specific outcome]
+
+WHAT YOULL SEE IN 30 DAYS:
+[3 specific measurable outcomes]
+
+INVESTMENT: \${tier}
+[One sentence making this obvious vs. doing nothing]
+
+NEXT STEP: [Single low-friction CTA]
+
+\${you}
+
+Under 250 words. Sound like a person, not a template.\`));}
+  catch(e){renderOutput('proposal-output','Error. Try again.');}
+}
+
+async function genOutreach(){
+  const niche=document.getElementById('o-niche').value;
+  const size=document.getElementById('o-size').value;
+  const name=document.getElementById('o-name').value||'Alex';
+  const type=document.getElementById('o-type').value;
+  const hook=document.getElementById('o-hook').value||'';
+  showLoading('outreach-output');
+  try{renderOutput('outreach-output',await callClaude(\`Write a \${type} from an AI automation consultant targeting \${niche} — \${size}.
+Sender: \${name}\${hook?'
+Specific hook: '+hook:''}
+
+Rules:
+- Open with THEIR world, not your offer
+- Reference real HVAC specifics (seasonal pressure, after-hours, reviews, etc.)
+- Sound human, not like marketing
+- No buzzwords
+- CTA = question or soft yes, never "book a 30-min call"
+- Email: subject + under 90 words | LinkedIn/SMS: under 60 words | Voicemail: spoken naturally with pauses
+
+Output the message only.\`));}
+  catch(e){renderOutput('outreach-output','Error. Try again.');}
+}
+
+const objections=[
+  "I already use ServiceTitan — I don't need more software",
+  "I don't have time to learn new technology",
+  "We tried automation before and it was a headache",
+  "Business is slow right now, not a good time",
+  "I don't trust AI talking to my customers",
+  "My office manager handles all of that",
+  "Just send me some info and I'll look at it",
+  "How do I know this works for HVAC?",
+  "I need to talk to my partner first",
+  "That's too expensive for what it is",
+];
+
+function buildObjectionGrid(){
+  document.getElementById('objection-grid').innerHTML=objections.map(obj=>\`<button class="btn-outline" onclick="handleObjClick(this,'\${obj.replace(/'/g,"\\'")}')">&#8220;\${obj}&#8221;</button>\`).join('');
+}
+
+async function handleObjClick(btn,obj){
+  const orig=btn.textContent;
+  btn.textContent='...generating';
+  await handleObjection(obj);
+  btn.textContent=orig;
+}
+
+async function handleCustomObj(){
+  const obj=document.getElementById('custom-obj').value;
+  if(!obj.trim())return;
+  await handleObjection(obj);
+}
+
+async function handleObjection(obj){
+  showLoading('objection-output');
+  try{renderOutput('objection-output',await callClaude(\`You're a confident AI automation consultant selling to an HVAC owner. They said:
+"\${obj}"
+
+Respond:
+1. Acknowledge briefly — don't grovel
+2. Reframe in HVAC context
+3. Direct credible reply using specific HVAC pain points
+4. End with a question that keeps them talking
+
+Under 100 words. Conversational. Sound like you've heard this before.\`));}
+  catch(e){renderOutput('objection-output','Error. Try again.');}
+}
+
+function calcROI(){
+  const leads=parseFloat(document.getElementById('roi-leads').value)||0;
+  const jobval=parseFloat(document.getElementById('roi-jobval').value)||0;
+  const hours=parseFloat(document.getElementById('roi-hours').value)||0;
+  const rate=parseFloat(document.getElementById('roi-rate').value)||0;
+  const fee=parseFloat(document.getElementById('roi-fee').value)||0;
+  const reviews=parseFloat(document.getElementById('roi-reviews').value)||0;
+  const leadVal=leads*jobval*4.33;
+  const laborVal=hours*rate*4.33;
+  const total=leadVal+laborVal+reviews;
+  const net=total-fee;
+  const roi=fee>0?((net/fee)*100).toFixed(0):0;
+  const mult=fee>0?(total/fee).toFixed(1):0;
+  const fmt=n=>'$'+n.toFixed(0).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');
+  const el=document.getElementById('roi-output');
+  el.classList.add('show');
+  el.innerHTML=\`<button class="copy-btn" onclick="copyOut('roi-output')">⬆ COPY TO CLIPBOARD</button>
+━━━ HVAC ROI BREAKDOWN ━━━━━━━━━━━━━━
+
+Recovered Leads (\${leads}/wk × \${fmt(jobval)}):
+  \${fmt(leadVal)}/mo
+
+Admin Labor Saved (\${hours}hrs × $\${rate}/hr):
+  \${fmt(laborVal)}/mo
+
+Review / Reputation Value:
+  \${fmt(reviews)}/mo
+
+────────────────────────────────
+TOTAL MONTHLY VALUE:   \${fmt(total)}/mo
+Your Investment:       \${fmt(fee)}/mo
+NET MONTHLY GAIN:      \${fmt(net)}/mo
+ROI:                   \${roi}%
+ANNUAL NET VALUE:      \${fmt(net*12)}
+
+━━━ PITCH LINE ━━━━━━━━━━━━━━━━━
+
+"\${fmt(fee)}/month gets you back \${fmt(total)}/month.
+That's $\${mult} for every $1 invested —
+most owners see it in the first 2 weeks."\`;
+}
+
+async function genAutomationIdeas(){
+  const situation=document.getElementById('intel-situation').value||'typical HVAC company with 6-10 techs';
+  showLoading('intel-output');
+  try{renderOutput('intel-output',await callClaude(\`You are an expert in AI automation for HVAC companies.
+
+Situation: "\${situation}"
+
+Generate 6 specific automation ideas ranked by ROI. For each:
+- Name
+- What it does (1-2 sentences)
+- Tools to use (Make.com, Twilio, Claude API, Zapier, etc.)
+- Estimated monthly value
+- Difficulty: Easy/Medium/Hard
+- Time to build
+
+HVAC-specific only. Lead with highest ROI.\`));}
+  catch(e){renderOutput('intel-output','Error. Try again.');}
+}
+
+buildAuditForm();
+buildObjectionGrid();
+</script>
+
+</body>
+</html>
+`);
 });
 
-app.get('/', (req, res) => {
-  res.send('Belfry Labs server is running.');
+// Proxy endpoint for AI calls
+app.post(’/api/chat’, async (req, res) => {
+const { prompt } = req.body;
+if (!prompt) {
+return res.status(400).json({ error: ‘No prompt provided’ });
+}
+try {
+const response = await fetch(‘https://api.anthropic.com/v1/messages’, {
+method: ‘POST’,
+headers: {
+‘Content-Type’: ‘application/json’,
+‘x-api-key’: process.env.ANTHROPIC_API_KEY,
+‘anthropic-version’: ‘2023-06-01’
+},
+body: JSON.stringify({
+model: ‘claude-sonnet-4-20250514’,
+max_tokens: 1000,
+messages: [{ role: ‘user’, content: prompt }]
+})
+});
+const data = await response.json();
+if (data.error) {
+return res.status(500).json({ error: data.error.message });
+}
+const text = data.content.map(i => i.text || ‘’).join(’\n’);
+res.json({ result: text });
+} catch (err) {
+console.error(‘API error:’, err);
+res.status(500).json({ error: ‘Server error. Check your API key.’ });
+}
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('Server running on port ' + PORT);
+app.listen(PORT, ‘0.0.0.0’, () => {
+console.log(’Server running on port ’ + PORT);
 });
